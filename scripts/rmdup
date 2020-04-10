@@ -1,0 +1,19 @@
+#!/usr/bin/env Rscript
+
+arguments = commandArgs(trailing=TRUE)
+
+if (length(arguments) != 1) stop('Exactly one argument required.')
+
+positions.list = arguments
+
+positions = scan(positions.list,what='')
+
+positions.counts = table(positions)
+
+bad.sites = names(positions.counts[positions.counts > 1])
+
+positions.out = positions[!positions %in% bad.sites]
+
+out.file = gsub('(.+?)\\.mapped','\\1.bed',positions.list)
+
+write(positions.out,sep='\n',file=out.file)
